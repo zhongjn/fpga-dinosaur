@@ -1,3 +1,6 @@
+`ifndef _parameters_vh_
+`define _parameters_vh_
+
 // 恐龙有两个碰撞点，一个是中心（脚），一个是头
 parameter DINO_SCREEN_X = 1231231; // 恐龙中心在屏幕上的X坐标
 parameter DINO_BITMAP_SIZE_X = 28; // 恐龙位图大小X
@@ -175,3 +178,5 @@ parameter [0:OBSTACLE_BITMAP_SIZE_X*OBSTACLE_BITMAP_SIZE_Y-1] OBSTACLE_IMG = {
     17'b00000011111000000,
     17'b00000011111000000
 };
+
+`endif

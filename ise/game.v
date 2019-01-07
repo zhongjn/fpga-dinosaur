@@ -1,5 +1,3 @@
-`include parameters.v
-
 // 负责接受玩家输入，控制恐龙及障碍物位置，并带有碰撞检测
 module Game(
     input wire game_clk, // 60Hz左右
@@ -7,22 +5,24 @@ module Game(
     input wire start, // 游戏开始
     output reg [11:0] dino_y,       // 恐龙脚的y
     output reg [11:0] obstacle_x,   // 障碍物x
-    output reg game_over            // 1表示游戏结束
+    output reg game_over,           // 1表示游戏结束
     output reg [1:0] dino_state
 );
+    `include "parameters.v"
     localparam DINO_INIT_V = 123123111;     // 恐龙跳起时的速度
     localparam DINO_G = 1231;               // 重力加速度
     localparam OBSTACLE_INIT_X = 123121;    // 障碍物初始位置
 
     integer speed;
     reg is_going;
+    reg [3:0] state_counter;                // 每16个游戏时钟切换一次恐龙状态
     // 初始化，游戏暂停
     initial begin 
         is_going <= 0; 
-        dino_state <= DINO_RUNNING_1;
+        dino_state <= DINO_STATE_RUNNING_1;
+        state_counter <= 4'b0;
     end
 
-    // TODO: 控制恐龙状态dino_state（常量定义在parameters.v里了）
 
 
     always @ (posedge game_clk)
@@ -53,6 +53,7 @@ module Game(
         begin
             is_going <= 0;
             game_over <= 1;
+            dino_state <= DINO_STATE_COLLIDED;
         end
 
         if (is_going == 1)
@@ -61,7 +62,8 @@ module Game(
             if (jump == 1 && dino_y == GROUND_SCREEN_Y)
             begin
             // 只有在jump为1和在地上的时候才起跳
-                speed = DINO_INIT_V;
+                speed <= DINO_INIT_V;
+                dino_state <= DINO_STATE_JUMP;
             end
             else if (dino_y > GROUND_SCREEN_Y && speed != 0)
             begin
@@ -74,6 +76,7 @@ module Game(
             //落地后结束跳跃
                 speed <= 0;
                 dino_y <= GROUND_SCREEN_Y;
+                dino_state <= DINO_STATE_RUNNING_1;
             end
 
             // 障碍物固定速度左移(速度暂定为1，需要保证obstacle_x会变成0)
@@ -86,6 +89,13 @@ module Game(
                 obstacle_x = OBSTACLE_INIT_X;
             end
 
+            // 控制恐龙状态dino_state（常量定义在parameters.v里了）
+            state_counter <= state_counter + 1;
+            if (state_counter == 4'b1111 && dino_state[1] == 0)
+            begin
+                dino_state[0] <= ~dino_state[0];
+                state_counter <= 4'b0000;
+            end
         end
     end
 endmodule
