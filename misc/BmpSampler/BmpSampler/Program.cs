@@ -22,7 +22,7 @@ namespace BmpSampler
             Size size = image.Size;
             for (int y = PixelSize / 2; y < size.Height; y+= PixelSize )
             {
-                for (int x = PixelSize / 2; x < size.Height; x += PixelSize)
+                for (int x = PixelSize / 2; x < size.Width; x += PixelSize)
                 {
                     Color c = image.GetPixel(x, y);
                     int bin = image.GetPixel(x, y).R >= 128 ? 0 : 1; // Black=1

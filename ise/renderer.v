@@ -53,7 +53,7 @@ module Renderer(
         wire obs_pixel_pos = 
             obs_rel_y * obs_BITMAP_SIZE_X + 
             obs_rel_x;
-        wire is_obstacle = obs_in_rect ? obs_IMG[obs_pixel_pos] : 0;
+        wire is_obstacle = obs_in_rect ? OBSTACLE_IMG[obs_pixel_pos] : 0;
 
 
         pixel <= night != (is_dino || is_obstacle); // 夜晚时反色，用异或
