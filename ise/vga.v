@@ -1,7 +1,7 @@
 module vga(
-    input vga_clk, pixel
+    input vga_clk, pixel,
     output reg [11:0] row_addr, col_addr,
-    output reg [3:0] r, g, b
+    output reg [3:0] r, g, b,
     output reg hs, vs); // vgac
 
     wire clrn = 1'b1;

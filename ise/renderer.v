@@ -1,4 +1,4 @@
-`include parameters.v
+`include "parameters.v"
 
 // 注意：绘制会被降采样
 // 屏幕只有320*240大小
@@ -16,10 +16,13 @@ module Renderer(
     wire [11:0] screen_x = vga_x >> 1; // 除以二，降采样
     wire [11:0] screen_y = vga_y >> 1; // 除以二，降采样
 
-
+    wire dino_in_rect, dino_rel_x, dino_rel_y;
+    wire dino_pixel_pos;
+    wire is_dino;
+    wire obs_in_rect, obs_rel_x, obs_rel_y;
+    wire obs_pixel_pos;
+    wire is_obstacle;
     always @(posedge pixel_clk) begin
-
-        wire dino_in_rect, dino_rel_x, dino_rel_y;
         InRect dino_rect(
             .cur_x(screen_x), 
             .cur_y(screen_y), 
@@ -31,14 +34,13 @@ module Renderer(
             .rel_x(dino_rel_x),
             .rel_y(dino_rel_y)
         );
-        wire dino_pixel_pos = 
+        dino_pixel_pos = 
             dino_state * DINO_BITMAP_SIZE_X * DINO_BITMAP_CENTER_Y + 
             dino_rel_y * DINO_BITMAP_SIZE_X + 
             dino_rel_x;
-        wire is_dino = dino_in_rect ? DINO_IMG[dino_pixel_pos] : 0;
+        is_dino = dino_in_rect ? DINO_IMG[dino_pixel_pos] : 0;
 
 
-        wire obs_in_rect, obs_rel_x, obs_rel_y;
         InRect obs_rect(
             .cur_x(screen_x), 
             .cur_y(screen_y), 
@@ -50,10 +52,10 @@ module Renderer(
             .rel_x(obs_rel_x),
             .rel_y(obs_rel_y)
         );
-        wire obs_pixel_pos = 
+        obs_pixel_pos = 
             obs_rel_y * obs_BITMAP_SIZE_X + 
             obs_rel_x;
-        wire is_obstacle = obs_in_rect ? OBSTACLE_IMG[obs_pixel_pos] : 0;
+        is_obstacle = obs_in_rect ? OBSTACLE_IMG[obs_pixel_pos] : 0;
 
 
         pixel <= night != (is_dino || is_obstacle); // 夜晚时反色，用异或
