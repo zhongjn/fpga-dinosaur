@@ -1,28 +1,27 @@
 `ifndef _parameters_vh_
-`define _parameters_vh_
 
-// 恐龙有两个碰撞点，一个是中心（脚），一个是头
-parameter DINO_SCREEN_X = 1231231; // 恐龙中心在屏幕上的X坐标
-parameter DINO_BITMAP_SIZE_X = 28; // 恐龙位图大小X
-parameter DINO_BITMAP_SIZE_Y = 28; // 恐龙位图大小Y
-parameter DINO_BITMAP_CENTER_X = 12; // 恐龙位图中心坐标X
-parameter DINO_BITMAP_CENTER_Y = 28; // 恐龙位图中心坐标Y
-parameter DINO_HEAD_OFFSET_X = 12; // 恐龙头部相对于中心的偏移量X
-parameter DINO_HEAD_OFFSET_Y = -20; // 恐龙头部相对于中心的偏移量Y
+// 恐龙有两个碰撞点，一个是中心（脚），一个是�
+parameter DINO_SCREEN_X = 12'd20; // 恐龙中心在屏幕上的X坐标
+parameter DINO_BITMAP_SIZE_X = 12'd28; // 恐龙位图大小X
+parameter DINO_BITMAP_SIZE_Y = 12'd28; // 恐龙位图大小Y
+parameter DINO_BITMAP_CENTER_X = 12'd12; // 恐龙位图中心坐标X
+parameter DINO_BITMAP_CENTER_Y = 12'd28; // 恐龙位图中心坐标Y
+parameter DINO_HEAD_OFFSET_X = 12'd12; // 恐龙头部相对于中心的偏移量X
+parameter DINO_HEAD_OFFSET_Y = -12'd20; // 恐龙头部相对于中心的偏移量Y
 
-parameter GROUND_SCREEN_Y = 100; // 地面的Y坐标
+parameter GROUND_SCREEN_Y = 12'd100; // 地面的Y坐标
 
 // 仙人掌的碰撞简单一点，直接是位图大小的矩形
-parameter OBSTACLE_BITMAP_SIZE_X = 17; // 仙人掌位图大小X
-parameter OBSTACLE_BITMAP_SIZE_Y = 28; // 仙人掌位图大小Y
-parameter OBSTACLE_BITMAP_CENTER_X = 9; // 仙人掌位图中心坐标X
-parameter OBSTACLE_BITMAP_CENTER_Y = 28; // 仙人掌位图中心坐标Y
+parameter OBSTACLE_BITMAP_SIZE_X = 12'd17; // 仙人掌位图大小X
+parameter OBSTACLE_BITMAP_SIZE_Y = 12'd28; // 仙人掌位图大小Y
+parameter OBSTACLE_BITMAP_CENTER_X = 12'd9; // 仙人掌位图中心坐标X
+parameter OBSTACLE_BITMAP_CENTER_Y = 12'd28; // 仙人掌位图中心坐标Y
 
 parameter
     DINO_STATE_RUNNING_1 = 2'b00,
     DINO_STATE_RUNNING_2 = 2'b01,
     DINO_STATE_JUMP = 2'b10,
-    DINO_STATE_COLLIDED = 2'b11; // 恐龙的四种状态
+    DINO_STATE_COLLIDED = 2'b11; // 恐龙的四种状�
 
 parameter [0:DINO_BITMAP_SIZE_X*DINO_BITMAP_SIZE_Y*4-1] DINO_IMG = {
     // 跑动图片1
@@ -148,7 +147,7 @@ parameter [0:DINO_BITMAP_SIZE_X*DINO_BITMAP_SIZE_Y*4-1] DINO_IMG = {
 
 
 parameter [0:OBSTACLE_BITMAP_SIZE_X*OBSTACLE_BITMAP_SIZE_Y-1] OBSTACLE_IMG = {
-    // 仙人掌
+    // 仙人�
     17'b00000001110000000,
     17'b00000011111000000,
     17'b00000011111000000,

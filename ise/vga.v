@@ -1,52 +1,107 @@
-module vga(
-    input vga_clk, pixel,
-    output reg [11:0] row_addr, col_addr,
-    output reg [3:0] r, g, b,
-    output reg hs, vs); // vgac
+// module vga(
+//     input vga_clk, pixel,
+//     output reg [11:0] row_addr, col_addr,
+//     output reg [3:0] r, g, b,
+//     output reg hs, vs); // vgac
 
-    wire clrn = 1'b1;
+//     wire clrn = 1'b1;
 
+//    // h_count: VGA horizontal counter (0-799)
+//    reg [11:0] h_count; // VGA horizontal counter (0-799): pixels
+//    always @ (posedge vga_clk) begin
+//        if (!clrn) begin
+//            h_count <= 12'h0;
+//        end else if (h_count == 12'd799) begin
+//            h_count <= 12'h0;
+//        end else begin 
+//            h_count <= h_count + 12'h1;
+//        end
+//    end
+//    // v_count: VGA vertical counter (0-524)
+//    reg [11:0] v_count; // VGA vertical   counter (0-524): lines
+//    always @ (posedge vga_clk or negedge clrn) begin
+//        if (!clrn) begin
+//            v_count <= 12'h0;
+//        end else if (h_count == 12'd799) begin
+//            if (v_count == 12'd524) begin
+//                v_count <= 12'h0;
+//            end else begin
+//                v_count <= v_count + 12'h1;
+//            end
+//        end
+//    end
+   
+//     // signals, will be latched for outputs
+//     wire  [11:0] row    =  v_count - 12'd35;
+//     wire  [11:0] col    =  h_count - 12'd143;
+//     wire        h_sync = (h_count > 12'd95);    //  96 -> 799
+//     wire        v_sync = (v_count > 12'd1);     //   2 -> 524
+
+//     wire [3:0] c = pixel ? 4'b1000 : 4'b1111;
+
+//     // vga signals
+//     always @ (posedge vga_clk) begin
+//         row_addr <=  row;
+//         col_addr <=  col;
+//         hs       <=  h_sync;   // horizontal synchronization
+//         vs       <=  v_sync;   // vertical   synchronization
+//         r        <=  c;
+//         g        <=  c;
+//         b        <=  c;
+//     end
+// endmodule
+
+module vgac (vga_clk,clrn,d_in,row_addr,col_addr,rdn,r,g,b,hs,vs); // vgac
+   input     [11:0] d_in;     // bbbb_gggg_rrrr, pixel
+   input            vga_clk;  // 25MHz
+   input            clrn;
+   output reg [8:0] row_addr; // pixel ram row address, 480 (512) lines
+   output reg [9:0] col_addr; // pixel ram col address, 640 (1024) pixels
+   output reg [3:0] r,g,b; // red, green, blue colors
+   output reg       rdn;      // read pixel RAM (active_low)
+   output reg       hs,vs;    // horizontal and vertical synchronization
    // h_count: VGA horizontal counter (0-799)
-   reg [11:0] h_count; // VGA horizontal counter (0-799): pixels
+   reg [9:0] h_count; // VGA horizontal counter (0-799): pixels
    always @ (posedge vga_clk) begin
        if (!clrn) begin
-           h_count <= 12'h0;
-       end else if (h_count == 12'd799) begin
-           h_count <= 12'h0;
+           h_count <= 10'h0;
+       end else if (h_count == 10'd799) begin
+           h_count <= 10'h0;
        end else begin 
-           h_count <= h_count + 12'h1;
+           h_count <= h_count + 10'h1;
        end
    end
    // v_count: VGA vertical counter (0-524)
-   reg [11:0] v_count; // VGA vertical   counter (0-524): lines
+   reg [9:0] v_count; // VGA vertical   counter (0-524): lines
    always @ (posedge vga_clk or negedge clrn) begin
        if (!clrn) begin
-           v_count <= 120'h0;
-       end else if (h_count == 12'd799) begin
-           if (v_count == 12'd524) begin
-               v_count <= 12'h0;
+           v_count <= 10'h0;
+       end else if (h_count == 10'd799) begin
+           if (v_count == 10'd524) begin
+               v_count <= 10'h0;
            end else begin
-               v_count <= v_count + 12'h1;
+               v_count <= v_count + 10'h1;
            end
        end
    end
-   
     // signals, will be latched for outputs
-    wire  [11:0] row    =  v_count - 12'd35;
-    wire  [11:0] col    =  h_count - 12'd143;
-    wire        h_sync = (h_count > 12'd95);    //  96 -> 799
-    wire        v_sync = (v_count > 12'd1);     //   2 -> 524
-
-    wire c = pixel ? 4'b0000 : 4'b1111;
-
+    wire  [9:0] row    =  v_count - 10'd35;     // pixel ram row addr 
+    wire  [9:0] col    =  h_count - 10'd143;    // pixel ram col addr 
+    wire        h_sync = (h_count > 10'd95);    //  96 -> 799
+    wire        v_sync = (v_count > 10'd1);     //   2 -> 524
+    wire        read   = (h_count > 10'd142) && // 143 -> 782
+                         (h_count < 10'd783) && //        640 pixels
+                         (v_count > 10'd34)  && //  35 -> 514
+                         (v_count < 10'd515);   //        480 lines
     // vga signals
     always @ (posedge vga_clk) begin
-        row_addr <=  row;
-        col_addr <=  col;
+        row_addr <=  row[8:0]; // pixel ram row address
+        col_addr <=  col;      // pixel ram col address
+        rdn      <= ~read;     // read pixel (active low)
         hs       <=  h_sync;   // horizontal synchronization
         vs       <=  v_sync;   // vertical   synchronization
-        r        <=  c;
-        g        <=  c;
-        b        <=  c;
+        r        <=  rdn ? 4'h0 : d_in[3:0]; // 3-bit red
+        g        <=  rdn ? 4'h0 : d_in[7:4]; // 3-bit green
+        b        <=  rdn ? 4'h0 : d_in[11:8]; // 2-bit blue
     end
 endmodule
