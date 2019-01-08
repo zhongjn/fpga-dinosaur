@@ -22,6 +22,7 @@ module top(
 	input clk,
 	input rstn,
 	input [15:0]SW,
+	input wire [1:0]BTN,
 	output hs,
 	output vs,
 	output [3:0] r,
@@ -31,9 +32,8 @@ module top(
 	//output SEGLED_CLR,
 	//output SEGLED_DO,
 	//output SEGLED_PEN,
-	inout [4:0]BTN_X,
-	inout [3:0]BTN_Y
-	 );
+	output wire BTNX4
+	);
 
 	reg [31:0]clkdiv;
 	always@(posedge clk) begin
@@ -42,10 +42,10 @@ module top(
 	wire [15:0] SW_OK;
 	AntiJitter #(4) a0[15:0](.clk(clkdiv[15]), .I(SW), .O(SW_OK));
 	
-	wire [4:0] keyCode;
-	wire keyReady;
-	Keypad k0 (.clk(clkdiv[15]), .keyX(BTN_Y), .keyY(BTN_X), .keyCode(keyCode), .ready(keyReady));
-
+	wire [1:0] btn_out;
+	pbdebounce m0(clk_div[17], BTN[0], btn_out[0]);
+ 	pbdebounce m1(clk_div[17], BTN[1], btn_out[1]);
+	
 	wire [11:0] dino_y;
 	wire [11:0] obstacle_x;
 	wire night = 1'b0;
@@ -62,8 +62,8 @@ module top(
 
 	Game game0(
 		.game_clk(game_clk),
-		.jump(SW_OK[15]),			// 某个button�
-		.start(SW_OK[14]),		// 某个button�
+		.jump(btn_out[0]),
+		.start(btn_out[1]),
 		.dino_y(dino_y),
 		.obstacle_x(obstacle_x),
 		.game_over(game_over),
@@ -77,18 +77,17 @@ module top(
 		.vga_x(vga_x),
 		.vga_y(vga_y),
 		.pixel(pixel));
-	// vga vga0(
-	// 	.vga_clk(pixel_clk),
-	// 	.pixel(pixel),
-	// 	.row_addr(vga_x), 
-	// 	.col_addr(vga_y),
-	// 	.r(r), 
-	// 	.g(g), 
-	// 	.b(b),
-	// 	.hs(hs),
-	// 	.vs(vs));
 	vgac v0 (
-		.vga_clk(clkdiv[1]), .clrn(SW_OK[0]), .d_in(pixel?12'hFFF:12'h000), .row_addr(vga_y), .col_addr(vga_x), .r(r), .g(g), .b(b), .hs(hs), .vs(vs)
+		.vga_clk(clkdiv[1]),
+		.clrn(SW_OK[0]),
+		.d_in(pixel?12'hFFF:12'h000),
+		.row_addr(vga_y),
+		.col_addr(vga_x),
+		.r(r),
+		.g(g),
+		.b(b),
+		.hs(hs),
+		.vs(vs)
 	);
 
 endmodule
