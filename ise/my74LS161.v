@@ -35,33 +35,26 @@ module my74LS161(input wire C_R,
 		end
 	always@(posedge CP) 
 	begin
-      if (C_R==1)
+		if (CP==1)
 		begin
-			if (L_D==0)
-			begin
-				Q[3:0]<=D[3:0];
-			end
-			if (CT_P==1&&CT_T==1&&L_D==1)
+			if (C_R==1&&CT_P==1&&CT_T==1&&L_D==1)
 			begin			
 				Q[3:0]<=Q[3:0]+4'b0001;
-				if (Q[3:0]==4'b1000)
-				begin
+				if (Q[3:0]==4'b1000)				
 					Co<=1'b1;
-				end
-				else begin
-					Co<=1'b0;
-				end		
-			end		
+				else 
+					Co<=1'b0;		
+			end
+			if (C_R==0)
+			begin
+				Q<=0;
+				Co<=1'b0;
+			end
 		end
-			
-		else if (C_R==0)
-		begin
+		if (clear==1)
+		begin	
 			Q<=0;
 			Co<=1'b0;
 		end
-	end
-	always@(posedge clear)
-	begin
-		Q<=0;
 	end
 endmodule
