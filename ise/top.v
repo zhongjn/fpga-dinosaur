@@ -29,23 +29,19 @@ module top(
 	output [3:0] r,
 	output [3:0] g,
 	output [3:0] b,
-	//output SEGLED_CLK,
-	//output SEGLED_CLR,
-	//output SEGLED_DO,
-	//output SEGLED_PEN,
-	output wire BTNX4
+	output wire BTNX4,
+	output wire [3:0]AN,
+	output wire [7:0]Segment
 	);
 
 	reg [31:0]clkdiv;
+	wire [15:0] score;
 	always@(posedge clk) begin
 		clkdiv <= clkdiv + 1'b1;
 	end
 	wire [15:0] SW_OK;
 	AntiJitter #(4) a0[15:0](.clk(clkdiv[15]), .I(SW), .O(SW_OK));
 	
-	// wire [1:0] btn_out;
-	// pbdebounce m0(clkdiv[17], BTN[0], btn_out[0]);
- 	// pbdebounce m1(clkdiv[17], BTN[1], btn_out[1]);
 	
 	wire [11:0] dino_y;
 	wire [11:0] obstacle_x;
@@ -69,6 +65,12 @@ module top(
 	assign LED[5] = game_over;
 	assign LED[6] = game_over;
 	assign LED[7] = game_over;
+	Score score0(
+		.clk(clk),
+		.clear(SW[15]),
+		.L_D(!game_over),
+		.Q(score));
+	DispNum_sch m20(.clk(clk),.num(score),.LES(4'b0),.points(4'b0),.RST(1'b0),.AN(AN),.Segment(Segment));
 	Game game0(
 		.game_clk(game_clk),
 		.jump(~BTN),
