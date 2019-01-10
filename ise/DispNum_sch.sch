@@ -38,7 +38,7 @@
         <port polarity="Output" name="AN(3:0)" />
         <port polarity="Output" name="Segment(7:0)" />
         <blockdef name="DisplaySync_sch">
-            <timestamp>2018-11-7T4:39:4</timestamp>
+            <timestamp>2019-1-10T8:34:38</timestamp>
             <rect width="256" x="64" y="-256" height="256" />
             <rect width="64" x="0" y="-236" height="24" />
             <line x2="0" y1="-224" y2="-224" x1="64" />
@@ -56,7 +56,7 @@
             <line x2="384" y1="-32" y2="-32" x1="320" />
         </blockdef>
         <blockdef name="MyMC14495">
-            <timestamp>2018-11-7T6:58:14</timestamp>
+            <timestamp>2019-1-10T8:38:59</timestamp>
             <rect width="256" x="64" y="-512" height="512" />
             <line x2="0" y1="-480" y2="-480" x1="64" />
             <line x2="0" y1="-400" y2="-400" x1="64" />
@@ -74,7 +74,7 @@
             <line x2="384" y1="-32" y2="-32" x1="320" />
         </blockdef>
         <blockdef name="clkdiv">
-            <timestamp>2018-11-21T6:4:10</timestamp>
+            <timestamp>2019-1-10T8:34:32</timestamp>
             <rect width="256" x="64" y="-128" height="128" />
             <line x2="0" y1="-96" y2="-96" x1="64" />
             <line x2="0" y1="-32" y2="-32" x1="64" />
