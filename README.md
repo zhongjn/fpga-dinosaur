@@ -11,6 +11,12 @@ A replica of Chrome Dino on FPGA
 * DispNum  
 * Score
 ## 核心模块模拟仿真时序图
+* Game模块开始及跳跃
+![Game模块开始及跳跃](sim_img\Game_collision.png)
+* Game模块跳跃结束
+![Game模块跳跃结束](sim_img\Game_jump_end.png)
+* Game模块跳跃结束
+![Game模块game_over](sim_img\Game_collision.png)
 ## 操作说明
 这个项目有两个外界输入，一个是SWORD最左侧的开关（AF10），用于控制游戏开始，另一个是矩阵按钮中的最左下角那个（V18，W16），用于控制跳跃。刚programme完毕之后显示的是没有game_over但是游戏暂停的状态，拨动开始开关（要置回0）可以开始游戏。按下跳跃按钮小恐龙会跳跃，以躲避障碍物。数码管的分数会随着时间递增。当小恐龙装上障碍物后游戏会暂停，LED全亮表明game_over，计分板暂停计分。此时如果像重新开始需要再拨动开关，此时分数会清零，游戏状态会重置。
 ## 组内成员及工作说明
