@@ -23,6 +23,7 @@ parameter
     DINO_STATE_JUMP = 2'b10,
     DINO_STATE_COLLIDED = 2'b11; // ??
 
+// ¿ÉÒÔÍ¨¹ýÍËºóÒ»µã¡¢ÕªµôÑÛ¾µ¡¢¹Û²ì±à¼­Æ÷£¨VS Code)ËõÂÔÍ¼µÈ·½Ê½¿´µ½Í¼Ïñ
 parameter [0:DINO_BITMAP_SIZE_X*DINO_BITMAP_SIZE_Y*4-1] DINO_IMG = {
     // ???1
     28'b0000000000000000000000000000,
