@@ -23,6 +23,7 @@ parameter
     DINO_STATE_JUMP = 2'b10,
     DINO_STATE_COLLIDED = 2'b11; // 恐龙的四种状态
 
+// 可以通过退后一点、摘掉眼镜、观察编辑器（VS Code)缩略图等方式看到图像
 parameter [0:DINO_BITMAP_SIZE_X*DINO_BITMAP_SIZE_Y*4-1] DINO_IMG = {
     // 跑动图片1
     28'b0000000000000000000000000000,
