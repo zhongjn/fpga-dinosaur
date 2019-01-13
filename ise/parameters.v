@@ -1,30 +1,30 @@
 `ifndef _parameters_vh_
 
-// 鎭愰緳鏈変袱涓鎾炵偣锛屼竴涓槸涓績锛堣剼锛夛紝涓�涓槸澶
-parameter DINO_SCREEN_X = 12'd20; // 鎭愰緳涓績鍦ㄥ睆骞曚笂鐨刋鍧愭爣
-parameter DINO_BITMAP_SIZE_X = 12'd28; // 鎭愰緳浣嶅浘澶у皬X
-parameter DINO_BITMAP_SIZE_Y = 12'd28; // 鎭愰緳浣嶅浘澶у皬Y
-parameter DINO_BITMAP_CENTER_X = 12'd12; // 鎭愰緳浣嶅浘涓績鍧愭爣X
-parameter DINO_BITMAP_CENTER_Y = 12'd28; // 鎭愰緳浣嶅浘涓績鍧愭爣Y
-parameter DINO_HEAD_OFFSET_X = 12'd12; // 鎭愰緳澶撮儴鐩稿浜庝腑蹇冪殑鍋忕Щ閲廥
-parameter DINO_HEAD_OFFSET_Y = -12'd20; // 鎭愰緳澶撮儴鐩稿浜庝腑蹇冪殑鍋忕Щ閲廦
+// 恐龙有两个碰撞点，一个是中心（脚），一个是头部
+parameter DINO_SCREEN_X = 12'd20; // 恐龙中心在屏幕上的X坐标
+parameter DINO_BITMAP_SIZE_X = 12'd28; // 恐龙位图大小X
+parameter DINO_BITMAP_SIZE_Y = 12'd28; // 恐龙位图大小Y
+parameter DINO_BITMAP_CENTER_X = 12'd12; // 恐龙位图中心坐标X
+parameter DINO_BITMAP_CENTER_Y = 12'd28; // 恐龙位图中心坐标Y
+parameter DINO_HEAD_OFFSET_X = 12'd12; // 恐龙头部相对于中心的偏移量X
+parameter DINO_HEAD_OFFSET_Y = -12'd20; // 恐龙头部相对于中心的偏移量Y
 
-parameter GROUND_SCREEN_Y = 12'd100; // 鍦伴潰鐨刌鍧愭爣
+parameter GROUND_SCREEN_Y = 12'd100; // 地面的Y坐标
 
-// 浠欎汉鎺岀殑纰版挒绠�鍗曚竴鐐癸紝鐩存帴鏄綅鍥惧ぇ灏忕殑鐭╁舰
-parameter OBSTACLE_BITMAP_SIZE_X = 12'd17; // 浠欎汉鎺屼綅鍥惧ぇ灏廥
-parameter OBSTACLE_BITMAP_SIZE_Y = 12'd28; // 浠欎汉鎺屼綅鍥惧ぇ灏廦
-parameter OBSTACLE_BITMAP_CENTER_X = 12'd9; // 浠欎汉鎺屼綅鍥句腑蹇冨潗鏍嘪
-parameter OBSTACLE_BITMAP_CENTER_Y = 12'd28; // 浠欎汉鎺屼綅鍥句腑蹇冨潗鏍嘫
+// 仙人掌的碰撞简单一点，直接是位图大小的矩形
+parameter OBSTACLE_BITMAP_SIZE_X = 12'd17; // 仙人掌位图大小X
+parameter OBSTACLE_BITMAP_SIZE_Y = 12'd28; // 仙人掌位图大小Y
+parameter OBSTACLE_BITMAP_CENTER_X = 12'd9; // 仙人掌位图中心坐标X
+parameter OBSTACLE_BITMAP_CENTER_Y = 12'd28; // 仙人掌位图中心坐标Y
 
 parameter
     DINO_STATE_RUNNING_1 = 2'b00,
     DINO_STATE_RUNNING_2 = 2'b01,
     DINO_STATE_JUMP = 2'b10,
-    DINO_STATE_COLLIDED = 2'b11; // 鎭愰緳鐨勫洓绉嶇姸鎬
+    DINO_STATE_COLLIDED = 2'b11; // 恐龙的四种状态
 
 parameter [0:DINO_BITMAP_SIZE_X*DINO_BITMAP_SIZE_Y*4-1] DINO_IMG = {
-    // 璺戝姩鍥剧墖1
+    // 跑动图片1
     28'b0000000000000000000000000000,
     28'b0000000000000000000000000000,
     28'b0000000000000000000000000000,
@@ -54,7 +54,7 @@ parameter [0:DINO_BITMAP_SIZE_X*DINO_BITMAP_SIZE_Y*4-1] DINO_IMG = {
     28'b0000001000000000000000000000,
     28'b0000001100000000000000000000,
 
-    // 璺戝姩鍥剧墖2
+    // 跑动图片2
     28'b0000000000000000000000000000,
     28'b0000000000000000000000000000,
     28'b0000000000000000000000000000,
@@ -84,7 +84,7 @@ parameter [0:DINO_BITMAP_SIZE_X*DINO_BITMAP_SIZE_Y*4-1] DINO_IMG = {
     28'b0000000000001000000000000000,
     28'b0000000000001100000000000000,
 
-    // 璺宠穬
+    // 跳跃
     28'b0000000000000000000000000000,
     28'b0000000000000000000000000000,
     28'b0000000000000000000000000000,
@@ -114,7 +114,7 @@ parameter [0:DINO_BITMAP_SIZE_X*DINO_BITMAP_SIZE_Y*4-1] DINO_IMG = {
     28'b0000001000001000000000000000,
     28'b0000001100001100000000000000,
 
-    // 鎾炲埌
+    // 撞到
     28'b0000000000000000000000000000,
     28'b0000000000000000000000000000,
     28'b0000000000000000000000000000,
@@ -147,7 +147,7 @@ parameter [0:DINO_BITMAP_SIZE_X*DINO_BITMAP_SIZE_Y*4-1] DINO_IMG = {
 
 
 parameter [0:OBSTACLE_BITMAP_SIZE_X*OBSTACLE_BITMAP_SIZE_Y-1] OBSTACLE_IMG = {
-    // 浠欎汉鎺
+    // 仙人掌
     17'b00000001110000000,
     17'b00000011111000000,
     17'b00000011111000000,

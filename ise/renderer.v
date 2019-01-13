@@ -1,27 +1,29 @@
-
-// Ê≥®ÊÑèÔºöÁªòÂà∂‰ºöË¢´ÈôçÈááÊ†∑
-// Â±èÂπïÂè™Êúâ320*240Â§ßÂ∞è
+// ”Œœ∑µƒªÊ÷∆ƒ£øÈ
+// ◊¢“‚£∫ªÊ÷∆ª·±ªΩµ≤…—˘
+// ∆¡ƒª÷ª”–320*240¥Û–°
 module Renderer(
     input wire [11:0] dino_y,
     input wire [1:0] dino_state,
     input wire [11:0] obstacle_x,
     input wire night,
-    input pixel_clk, // ÂÉèÁ¥†ÁªòÂà∂Êó∂Èíü
-    input [11:0] vga_x, // ÂΩìÂâçÂÉèÁ¥†‰ΩçÁΩÆX
-	input [11:0] vga_y, // ÂΩìÂâçÂÉèÁ¥†‰ΩçÁΩÆY
-    output reg pixel // ÂΩìÂâçÂÉèÁ¥†ÊòØÂê¶ÁÇπ‰∫ÆÔºåÁÇπ‰∫Æ‰∏∫1
+    input pixel_clk, // œÒÀÿªÊ÷∆ ±÷”
+    input [11:0] vga_x, // µ±«∞œÒÀÿŒª÷√X
+	input [11:0] vga_y, // µ±«∞œÒÀÿŒª÷√Y
+    output reg pixel // µ±«∞œÒÀÿ «∑Òµ„¡¡£¨µ„¡¡Œ™1
 );
 `include "parameters.v"
 
-    wire [11:0] screen_x = vga_x >> 1; // Èô§‰ª•‰∫åÔºåÈôçÈááÔøΩ
-    wire [11:0] screen_y = vga_y >> 1; // Èô§‰ª•‰∫åÔºåÈôçÈááÔøΩ
+    wire [11:0] screen_x = vga_x >> 1; // ≥˝“‘∂˛£¨Ωµ≤…—˘
+    wire [11:0] screen_y = vga_y >> 1; // ≥˝“‘∂˛£¨Ωµ≤…—˘
 
+    // ø÷¡˙◊¯±Íº∆À„
     wire dino_in_rect;
-	 wire [11:0] dino_rel_x;
-	 wire [11:0] dino_rel_y;
+	wire [11:0] dino_rel_x;
+	wire [11:0] dino_rel_y;
     wire [11:0] dino_pixel_pos;
     wire is_dino;
 
+    // ø÷¡˙’œ∞≠ŒÔº∆À„
     wire obs_in_rect;
 	wire [11:0] obs_rel_x;
 	wire [11:0] obs_rel_y;
@@ -50,28 +52,31 @@ module Renderer(
         .rel_x(dino_rel_x),
         .rel_y(dino_rel_y)
     );
+
+
     assign dino_pixel_pos = 
         dino_state * DINO_BITMAP_SIZE_X * DINO_BITMAP_CENTER_Y + 
         dino_rel_y * DINO_BITMAP_SIZE_X + 
         dino_rel_x;
-    assign is_dino = dino_in_rect ? DINO_IMG[dino_pixel_pos] : 1'b0;
+    assign is_dino = dino_in_rect ? DINO_IMG[dino_pixel_pos] : 1'b0; // ¿˚”√œ‡∂‘Œª÷√¥”ÕºœÒ≤…—˘£¨≈–∂œµ±«∞œÒÀÿµ„ «≤ª «ø÷¡˙
 
 
 
     assign obs_pixel_pos = 
         obs_rel_y * OBSTACLE_BITMAP_SIZE_X + 
         obs_rel_x;
-    assign is_obstacle = obs_in_rect ? OBSTACLE_IMG[obs_pixel_pos] : 1'b0;
+    assign is_obstacle = obs_in_rect ? OBSTACLE_IMG[obs_pixel_pos] : 1'b0; // ¿˚”√œ‡∂‘Œª÷√¥”ÕºœÒ≤…—˘£¨≈–∂œµ±«∞œÒÀÿµ„ «≤ª «’œ∞≠ŒÔ
 
-    wire is_ground = screen_y == GROUND_SCREEN_Y;
+    wire is_ground = screen_y == GROUND_SCREEN_Y; // ≈–∂œ «≤ª «µÿ√Ê
+
     always @(posedge pixel_clk) begin
-
-        pixel <= night != (is_dino || is_obstacle || is_ground); // Â§úÊôöÊó∂ÂèçËâ≤ÔºåÁî®ÂºÇÔøΩ
+        pixel <= night != (is_dino || is_obstacle || is_ground); // “πÕÌ ±∑¥…´£¨”√“ÏªÚ µœ÷
     end
 
 endmodule
 
-
+// ≈–∂œµ±«∞µ„ «∑Ò‘⁄æÿ–Œƒ⁄
+// »Áπ˚ «£¨ƒ«√¥∑µªÿœ‡∂‘Œª÷√–≈œ¢
 module InRect(
     input wire [11:0] cur_x, cur_y, 
     input wire [11:0] rect_pos_x, rect_pos_y,
