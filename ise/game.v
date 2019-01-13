@@ -1,28 +1,28 @@
-// è´Ÿè´£æ¥å—ç©å®¶è¾“å…¥ï¼Œæ§åˆ¶æé¾™åŠéšœç¢ç‰©ä½ç½®ï¼Œå¹¶å¸¦æœ‰ç¢°æ’æ£€æµ‹
+// ¸ºÔğ½ÓÊÜÍæ¼ÒÊäÈë£¬¿ØÖÆ¿ÖÁú¼°ÕÏ°­ÎïÎ»ÖÃ£¬²¢´øÓĞÅö×²¼ì²â
 module Game(
-    input wire game_clk,                            // æ¸¸æˆæ—¶é’Ÿï¼Œæ§åˆ¶å°æé¾™çš„è·³è·ƒé€Ÿåº¦å’Œéšœç¢ç‰©çš„ç§»åŠ¨é€Ÿåº¦
-    input wire jump,                                // è·³è·ƒä¿¡å·
-    input wire start,                               // æ¸¸æˆå¼€å§‹ä¿¡å·
-	output reg night,                               // è¾“å‡ºç™½å¤©å¤œé—´å˜åŒ–ï¼Œ1ä¸ºå¤œé—´
-    output reg [11:0] dino_y,                       // è¾“å‡ºæé¾™ä¸­å¿ƒçš„y
-    output reg signed [11:0] obstacle_x,            // è¾“å‡ºéšœç¢ç‰©çš„x
-    output reg game_over,                           // 1ä¸ºæ¸¸æˆç»“æŸ
-    output reg [1:0] dino_state                     // è¾“å‡ºå°æé¾™çš„çŠ¶æ€
+    input wire game_clk,                            // ÓÎÏ·Ê±ÖÓ£¬¿ØÖÆĞ¡¿ÖÁúµÄÌøÔ¾ËÙ¶ÈºÍÕÏ°­ÎïµÄÒÆ¶¯ËÙ¶È
+    input wire jump,                                // ÌøÔ¾ĞÅºÅ
+    input wire start,                               // ÓÎÏ·¿ªÊ¼ĞÅºÅ
+	output reg night,                               // Êä³ö°×ÌìÒ¹¼ä±ä»¯£¬1ÎªÒ¹¼ä
+    output reg [11:0] dino_y,                       // Êä³ö¿ÖÁúÖĞĞÄµÄy
+    output reg signed [11:0] obstacle_x,            // Êä³öÕÏ°­ÎïµÄx
+    output reg game_over,                           // 1ÎªÓÎÏ·½áÊø
+    output reg [1:0] dino_state                     // Êä³öĞ¡¿ÖÁúµÄ×´Ì¬
 );
 `include "parameters.v"
-    localparam DINO_INIT_V = 12'd10;                // æé¾™è·³èµ·æ—¶çš„é€Ÿåº¦
-    localparam DINO_G = 12'd1;                      // é‡åŠ›åŠ é€Ÿåº¦
-    localparam OBSTACLE_INIT_X = 12'd400;           // éšœç¢ç‰©åˆå§‹ä½ç½®
+    localparam DINO_INIT_V = 12'd10;                // ¿ÖÁúÌøÆğÊ±µÄËÙ¶È
+    localparam DINO_G = 12'd1;                      // ÖØÁ¦¼ÓËÙ¶È
+    localparam OBSTACLE_INIT_X = 12'd400;           // ÕÏ°­Îï³õÊ¼Î»ÖÃ
 
     reg signed [11:0] speed;
-    reg is_going;                                   // æ¸¸æˆæš‚åœï¼ˆä¸åŒäºgame_overï¼‰
-    reg [1:0] state_counter;                        // ä¸€ä¸ªæ¸¸æˆæ—¶é’Ÿåˆ‡æ¢ä¸€æ¬¡æé¾™çŠ¶æ€
-    reg running_img;                                // æé¾™è¿åŠ¨çŠ¶æ€æ§åˆ¶
-	reg [11:0] obs_speed;                           // éšœç¢ç‰©é€Ÿåº¦ï¼ˆå¯å˜ï¼‰
-	reg [11:0] frame_count;                         // å¸§è®¡æ•°ï¼Œç”¨äºåˆ‡æ¢çŠ¶æ€
+    reg is_going;                                   // ÓÎÏ·ÔİÍ££¨²»Í¬ÓÚgame_over£©
+    reg [1:0] state_counter;                        // Ò»¸öÓÎÏ·Ê±ÖÓÇĞ»»Ò»´Î¿ÖÁú×´Ì¬
+    reg running_img;                                // ¿ÖÁúÔË¶¯×´Ì¬¿ØÖÆ
+	reg [11:0] obs_speed;                           // ÕÏ°­ÎïËÙ¶È£¨¿É±ä£©
+	reg [11:0] frame_count;                         // Ö¡¼ÆÊı£¬ÓÃÓÚÇĞ»»×´Ì¬
 
 
-    // åˆå§‹åŒ–ï¼Œæ¸¸æˆæš‚åœ
+    // ³õÊ¼»¯£¬ÓÎÏ·ÔİÍ£
     initial begin 
         is_going <= 0; 
         dino_state <= DINO_STATE_RUNNING_1;
@@ -36,7 +36,7 @@ module Game(
     begin
         if (is_going == 0 && start == 1)
         begin
-            // å¼€å§‹æ—¶ï¼Œé‡ç½®
+            // ¿ªÊ¼Ê±£¬ÖØÖÃ
             dino_y <= GROUND_SCREEN_Y;
             obstacle_x <= OBSTACLE_INIT_X;
             game_over <= 0;
@@ -48,7 +48,7 @@ module Game(
         end
 
 
-        // æ§åˆ¶ç¢°æ’ï¼Œå½“ä¸¤ä¸ªç¢°æ’ç‚¹ä¹‹ä¸€åœ¨ä»™äººæŒä½å›¾èŒƒå›´å†…æ—¶å³å‘ç”Ÿç¢°æ’ï¼Œgame_over
+        // ¿ØÖÆÅö×²£¬µ±Á½¸öÅö×²µãÖ®Ò»ÔÚÏÉÈËÕÆÎ»Í¼·¶Î§ÄÚÊ±¼´·¢ÉúÅö×²£¬game_over
         if ((
                 DINO_SCREEN_X >= obstacle_x - OBSTACLE_BITMAP_CENTER_X
                 && DINO_SCREEN_X <= obstacle_x - OBSTACLE_BITMAP_CENTER_X + OBSTACLE_BITMAP_SIZE_X
@@ -70,10 +70,10 @@ module Game(
 
         if (is_going == 1'b1)
         begin
-            // æ§åˆ¶æé¾™çš„è·³è·ƒ
+            // ¿ØÖÆ¿ÖÁúµÄÌøÔ¾
             if (jump == 1'b1 && speed == 1'b0 && dino_y == GROUND_SCREEN_Y)
             begin
-            // åªæœ‰åœ¨jumpå’Œåœ¨åœ°ä¸Šçš„æ—¶å€™æ‰èµ·è·³
+            // Ö»ÓĞÔÚjumpºÍÔÚµØÉÏµÄÊ±ºò²ÅÆğÌø
                 speed <= DINO_INIT_V;
                 dino_state <= DINO_STATE_JUMP;
             end
@@ -81,32 +81,32 @@ module Game(
             begin
                 if (dino_y - speed >= GROUND_SCREEN_Y) 
                 begin
-                // è½åœ°ååœæ­¢è·³è·ƒ
+                // ÂäµØºóÍ£Ö¹ÌøÔ¾
                     dino_y <= GROUND_SCREEN_Y;
                     speed <= 1'b0;
                     dino_state <= {1'b0, running_img};
                 end
                 else 
                 begin
-                // ç©ºä¸­ä¸æ–­æ”¹å˜é€Ÿåº¦
+                // ¿ÕÖĞ²»¶Ï¸Ä±äËÙ¶È
                     dino_y <= dino_y - speed;
                     speed <= speed - DINO_G;
                 end
             end
 
 
-            // éšœç¢ç‰©å›ºå®šé€Ÿåº¦å·¦ç§»
+            // ÕÏ°­Îï¹Ì¶¨ËÙ¶È×óÒÆ
             if (obstacle_x > 0)
             begin
                 obstacle_x <= obstacle_x - obs_speed;
             end
             else
             begin
-            // éšœç¢ç‰©åˆ°è¾¾å±å¹•å·¦ç«¯åè‡ªåŠ¨åœ¨å³ç«¯ç”Ÿæˆ
+            // ÕÏ°­Îïµ½´ïÆÁÄ»×ó¶Ëºó×Ô¶¯ÔÚÓÒ¶ËÉú³É
                 obstacle_x <= OBSTACLE_INIT_X;
             end
 
-            // æ§åˆ¶æé¾™çŠ¶æ€dino_stateï¼ˆå¸¸é‡å®šä¹‰åœ¨parameters.vé‡Œäº†ï¼‰
+            // ¿ØÖÆ¿ÖÁú×´Ì¬dino_state£¨³£Á¿¶¨ÒåÔÚparameters.vÀïÁË£©
             state_counter <= state_counter + 1'b1;
             if (state_counter == 2'b11)
             begin
@@ -114,11 +114,11 @@ module Game(
                 state_counter <= 2'b00;
             end
 			
-            // ç»´æŠ¤frame_countï¼Œåœ¨ä¸€å®šæ—¶é’Ÿå‘¨æœŸåå¯¹éšœç¢ç‰©åŠ é€Ÿå¹¶åˆ‡æ¢ç™½å¤©å’Œå¤œæ™š
+            // Î¬»¤frame_count£¬ÔÚÒ»¶¨Ê±ÖÓÖÜÆÚºó¶ÔÕÏ°­Îï¼ÓËÙ²¢ÇĞ»»°×ÌìºÍÒ¹Íí
 			frame_count <= frame_count + 11'b1;
 			if (frame_count == 11'b1_0_000_000) begin
 				frame_count <= 11'b0;
-                // éšœç¢ç‰©é€Ÿåº¦åˆä¸€å®šçš„ä¸Šé™
+                // ÕÏ°­ÎïËÙ¶ÈÓÖÒ»¶¨µÄÉÏÏŞ
 				if (obs_speed < 12'd20)
 				begin
 					obs_speed <= obs_speed + 3'd2;

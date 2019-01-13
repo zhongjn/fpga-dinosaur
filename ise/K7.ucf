@@ -1,8 +1,8 @@
-// Êó∂ÈíüÁõ∏ÂÖ≥
+//  ±÷”œ‡πÿ
 NET "clk"                                      LOC = AC18      | IOSTANDARD = LVCMOS18 ;
 NET "rstn"                                     LOC = W13       | IOSTANDARD = LVCMOS18 ;
 
-// LEDÂºïËÑö
+// LED“˝Ω≈
 NET "LED[0]" LOC = W23 | IOSTANDARD = LVCMOS33;
 NET "LED[1]" LOC = AB26 | IOSTANDARD = LVCMOS33;
 NET "LED[2]" LOC = Y25 | IOSTANDARD = LVCMOS33;
@@ -12,7 +12,7 @@ NET "LED[5]" LOC = Y22 | IOSTANDARD = LVCMOS33;
 NET "LED[6]" LOC = AE21 | IOSTANDARD = LVCMOS33;
 NET "LED[7]" LOC = AF24 | IOSTANDARD = LVCMOS33;
 
-// Êï∞Á†ÅÁÆ°ÂºïËÑö
+//  ˝¬Îπ‹“˝Ω≈
 NET "SEGMENT[0]"LOC = AB22 | IOSTANDARD = LVCMOS33;
 NET "SEGMENT[1]" LOC = AD24 | IOSTANDARD = LVCMOS33;
 NET "SEGMENT[2]" LOC = AD23 | IOSTANDARD = LVCMOS33;
@@ -26,7 +26,7 @@ NET "AN[1]" LOC = AC21 | IOSTANDARD = LVCMOS33;
 NET "AN[2]" LOC = AB21 | IOSTANDARD = LVCMOS33;
 NET "AN[3]" LOC = AC22 | IOSTANDARD = LVCMOS33;
 
-// ÂºÄÂÖ≥ÂºïËÑöÔºàÂè™Áî®Âà∞‰∫ÜSW[15]Ôºâ
+// ø™πÿ“˝Ω≈£®÷ª”√µΩ¡ÀSW[15]£©
 NET "SW[0]"                                    LOC = AA10      | IOSTANDARD = LVCMOS15 ;
 NET "SW[1]"                                    LOC = AB10      | IOSTANDARD = LVCMOS15 ;
 NET "SW[2]"                                    LOC = AA13      | IOSTANDARD = LVCMOS15 ;
@@ -44,7 +44,7 @@ NET "SW[13]"                                   LOC = AE13      | IOSTANDARD = LV
 NET "SW[14]"                                   LOC = AF13      | IOSTANDARD = LVCMOS15 ;
 NET "SW[15]"                                   LOC = AF10      | IOSTANDARD = LVCMOS15 ;
 
-// VGAÁõ∏ÂÖ≥Êé•Âè£
+// VGAœ‡πÿΩ”ø⁄
 NET "b[0]"                                 LOC = T20       | IOSTANDARD = LVCMOS33 | SLEW = FAST ;
 NET "b[1]"                                 LOC = R20       | IOSTANDARD = LVCMOS33 | SLEW = FAST ;
 NET "b[2]"                                 LOC = T22       | IOSTANDARD = LVCMOS33 | SLEW = FAST ;
@@ -60,7 +60,7 @@ NET "r[3]"                                 LOC = P21       | IOSTANDARD = LVCMOS
 NET "hs"                                   LOC = M22       | IOSTANDARD = LVCMOS33 | SLEW = FAST ;
 NET "vs"                                   LOC = M21       | IOSTANDARD = LVCMOS33 | SLEW = FAST ;
     
-// ÊåâÈíÆÊé•Âè£
+// ∞¥≈•Ω”ø⁄
 NET "BTN" LOC = V18 | IOSTANDARD = LVCMOS18;
 NET "BTN" CLOCK_DEDICATED_ROUTE = FALSE;
 NET "BTNX4" LOC = W16 | IOSTANDARD = LVCMOS18;

@@ -1,46 +1,46 @@
 `timescale 1ns / 1ps
 
 module top(
-	input clk,						// ç³»ç»Ÿæ—¶é’Ÿ
+	input clk,						// ÏµÍ³Ê±ÖÓ
 	input rstn,						// reset
-	input [15:0]SW,					// 15ä¸ªå¼€å…³
-	input wire BTN,					// ä¸€ä¸ªæŒ‰é’®
-	output wire LED[7:0],			// Arduinoå­æ¿ä¸Šçš„7ä¸ªLED
-	output hs,						// VGAæ°´å¹³åŒæ­¥
-	output vs,						// VGAå‚ç›´åŒæ­¥
+	input [15:0]SW,					// 15¸ö¿ª¹Ø
+	input wire BTN,					// Ò»¸ö°´Å¥
+	output wire LED[7:0],			// Arduino×Ó°åÉÏµÄ7¸öLED
+	output hs,						// VGAË®Æ½Í¬²½
+	output vs,						// VGA´¹Ö±Í¬²½
 	output [3:0] r,					// VGA r
 	output [3:0] g,					// VGA g
 	output [3:0] b,					// VGA b
-	output wire BTNX4,				// æŒ‰é’®ä½¿èƒ½
-	output wire [3:0]AN,			// å››ä½æ•°ç ç®¡çš„ä½æ§åˆ¶
-	output wire [7:0]Segment		// æ•°ç ç®¡çš„ä¸ƒä¸ªæ®µæ§åˆ¶
+	output wire BTNX4,				// °´Å¥Ê¹ÄÜ
+	output wire [3:0]AN,			// ËÄÎ»ÊıÂë¹ÜµÄÎ»¿ØÖÆ
+	output wire [7:0]Segment		// ÊıÂë¹ÜµÄÆß¸ö¶Î¿ØÖÆ
 	);
 
-	// äº§ç”Ÿæ—¶é’Ÿåˆ†é¢‘
+	// ²úÉúÊ±ÖÓ·ÖÆµ
 	reg [31:0]clkdiv;
 	always@(posedge clk) begin
 		clkdiv <= clkdiv + 1'b1;
 	end
-	// å¼€å…³å»æŠ–åŠ¨
+	// ¿ª¹ØÈ¥¶¶¶¯
 	wire [15:0] SW_OK;
 	AntiJitter #(4) a0[15:0](.clk(clkdiv[15]), .I(SW), .O(SW_OK));
 	
 
-	wire game_clk = clkdiv[21];		// æ¸¸æˆæ—¶é’Ÿ
-	wire [11:0] dino_y;				// æ¥è‡ªgameçš„dino_y
-	wire [11:0] obstacle_x;			// æ¥è‡ªgameçš„obstacle_x
-	wire night;						// æ¥è‡ªgameçš„night
-	wire game_over;					// æ¥è‡ªgameçš„game_over
-	wire [1:0] dino_state;			// æ¥è‡ªgameçš„dino_state
+	wire game_clk = clkdiv[21];		// ÓÎÏ·Ê±ÖÓ
+	wire [11:0] dino_y;				// À´×ÔgameµÄdino_y
+	wire [11:0] obstacle_x;			// À´×ÔgameµÄobstacle_x
+	wire night;						// À´×ÔgameµÄnight
+	wire game_over;					// À´×ÔgameµÄgame_over
+	wire [1:0] dino_state;			// À´×ÔgameµÄdino_state
 
-	wire [11:0] vga_x; 				// å½“å‰åƒç´ ä½ç½®X
-	wire [11:0] vga_y; 				// å½“å‰åƒç´ ä½ç½®Y
+	wire [11:0] vga_x; 				// µ±Ç°ÏñËØÎ»ÖÃX
+	wire [11:0] vga_y; 				// µ±Ç°ÏñËØÎ»ÖÃY
 
-	wire pixel_clk = clkdiv[1];		// åƒç´ 
-    wire pixel;						// åƒç´ äº®æš—
-	wire [15:0] score;				// åˆ†æ•°
+	wire pixel_clk = clkdiv[1];		// ÏñËØ
+    wire pixel;						// ÏñËØÁÁ°µ
+	wire [15:0] score;				// ·ÖÊı
 	
-	// game_overæ—¶LEDäº®
+	// game_overÊ±LEDÁÁ
 	assign LED[0] = game_over;
 	assign LED[1] = game_over;
 	assign LED[2] = game_over;
@@ -49,15 +49,15 @@ module top(
 	assign LED[5] = game_over;
 	assign LED[6] = game_over;
 	assign LED[7] = game_over;
-	// å°†æŒ‰é’®ä½¿èƒ½
+	// ½«°´Å¥Ê¹ÄÜ
 	assign BTNX4 = 1'b0;
-	// äº§ç”Ÿåˆ†æ•°
+	// ²úÉú·ÖÊı
 	Score score0(
 		.clk(clk),
 		.clear(SW[15]),
 		.L_D(!game_over),
 		.Q(score));
-	// æ˜¾ç¤ºåˆ†æ•°
+	// ÏÔÊ¾·ÖÊı
 	DispNum_sch m20(
 		.clk(clk),
 		.num(score),
@@ -66,7 +66,7 @@ module top(
 		.RST(1'b0),
 		.AN(AN),
 		.Segment(Segment));
-	// Gameæ¨¡å—
+	// GameÄ£¿é
 	Game game0(
 		.game_clk(game_clk),
 		.jump(~BTN),
@@ -76,7 +76,7 @@ module top(
 		.obstacle_x(obstacle_x),
 		.game_over(game_over),
 		.dino_state(dino_state));
-	// Rendereræ¨¡å—
+	// RendererÄ£¿é
 	Renderer renderer0(
 		.dino_y(dino_y),
 		.dino_state(dino_state),
@@ -86,7 +86,7 @@ module top(
 		.vga_x(vga_x),
 		.vga_y(vga_y),
 		.pixel(pixel));
-	// VGAæ˜¾ç¤ºæ¨¡å—
+	// VGAÏÔÊ¾Ä£¿é
 	vgac v0 (
 		.vga_clk(clkdiv[1]),
 		.clrn(1'b1),
