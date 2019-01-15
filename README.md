@@ -1,4 +1,4 @@
-# fpga-dinosaur
+﻿# fpga-dinosaur
 A replica of Chrome Dino on FPGA
 ## 背景介绍
 如果你不知道小恐龙游戏的话，请打开电脑中的Chrome浏览器，在地址栏中输入chrome://dino/，然后按空格体验游戏。而我们的这个项目是一个运行在FPGA上的同款小恐龙游戏。为了维护世界和平和防止小恐龙的灭绝，玩家需要控制小恐龙的跳跃来躲避路径上的仙人掌，玩家坚持的时间越久，分数越高。随着游戏的进行，仙人掌的运动速度会越来越快直到一个峰值。游戏场景会发生白天黑夜的变化让游戏变得更cooooooooool。
@@ -86,6 +86,8 @@ B. 输入输出交互选择
 ![Game模块跳跃结束](sim_img/Game_jump_end.png)
 * Game模块游戏失败  
 发生碰撞后游戏停止，输出game_over为1，表明游戏失败。
+* Score模块
+当 L_D=1且clear=0 时代表游戏进行， 此时计数器正常计数；L_D=0 时代表游戏结束，此时计数器停止计时；clear=1时，表明游戏开始，此时计数器清零。
 ![Game模块game_over](sim_img/Game_collision.png)  
 ## 组内成员及工作说明
 ## 验证过程  
