@@ -73,7 +73,24 @@ B. 输入输出交互选择
 
         4.负责根据地面、小恐龙、障碍物的位置，给出每一个像素点的颜色。小恐龙、仙人掌的图像由几个常值矢量（ROM）保存，通过计算当前像素与它们位置的相对位置，来判断是不是在图像范围内，以及需不需要点亮像素。
 * DispNum  
+        
+        1.输入        
+        input wire clk: 来自Top的游戏时钟
+        input wire RST: 1'b1
+        input wire num [15:0]: 来自Top的分数信号
+        input wire points[3:0]: 小数点信号，为4'b0
+        input wire LES[3:0]: 使能信号，为4'b0
+        2.输出
+        output wire AN[3:0]: 输出使能信号
+        output wire Segment[7:0]: 输出显示信号到四位七段数码管 
 * Score  
+
+        1.输入
+        input wire clk: 来自Top的游戏时钟        
+        input wire L_D:  来自Top的控制计数暂停信号
+        input wire clear: 来自Top的清零信号
+        2.输出
+       output wire[15:0]: 16位BCD码表示4位十进制数，输出到Top模块
 * Parameters.v
 
         提供控制游戏的所有参数（常量），便于优化操作体验。还保存了小恐龙、仙人掌的二值位图，它们是通过一个自制的图像二值采样脚本得到的。你可以通过退后一点、摘掉眼镜、观察编辑器（VS Code）缩略图等方式看到图像。
