@@ -1,4 +1,4 @@
-# fpga-dinosaur
+﻿# fpga-dinosaur
 A replica of Chrome Dino on FPGA
 ## 背景介绍
 如果你不知道小恐龙游戏的话，请打开电脑中的Chrome浏览器，在地址栏中输入chrome://dino/，然后按空格体验游戏。而我们的这个项目是一个运行在FPGA上的同款小恐龙游戏。为了维护世界和平和防止小恐龙的灭绝，玩家需要控制小恐龙的跳跃来躲避路径上的仙人掌，玩家坚持的时间越久，分数越高。随着游戏的进行，仙人掌的运动速度会越来越快直到一个峰值。游戏场景会发生白天黑夜的变化让游戏变得更cooooooooool。
@@ -73,7 +73,24 @@ B. 输入输出交互选择
 
         4.负责根据地面、小恐龙、障碍物的位置，给出每一个像素点的颜色。小恐龙、仙人掌的图像由几个常值矢量（ROM）保存，通过计算当前像素与它们位置的相对位置，来判断是不是在图像范围内，以及需不需要点亮像素。
 * DispNum  
+        
+        1.输入        
+        input wire clk: 来自Top的游戏时钟
+        input wire RST: 1'b1
+        input wire num [15:0]: 来自Top的分数信号
+        input wire points[3:0]: 小数点信号，为4'b0
+        input wire LES[3:0]: 使能信号，为4'b0
+        2.输出
+        output wire AN[3:0]: 输出使能信号
+        output wire Segment[7:0]: 输出显示信号到四位七段数码管 
 * Score  
+
+        1.输入
+        input wire clk: 来自Top的游戏时钟        
+        input wire L_D:  来自Top的控制计数暂停信号
+        input wire clear: 来自Top的清零信号
+        2.输出
+       output wire[15:0]: 16位BCD码表示4位十进制数，输出到Top模块
 * Parameters.v
 
         提供控制游戏的所有参数（常量），便于优化操作体验。还保存了小恐龙、仙人掌的二值位图，它们是通过一个自制的图像二值采样脚本得到的。你可以通过退后一点、摘掉眼镜、观察编辑器（VS Code）缩略图等方式看到图像。
@@ -86,6 +103,8 @@ B. 输入输出交互选择
 ![Game模块跳跃结束](sim_img/Game_jumpend.png)
 * Game模块游戏失败  
 发生碰撞后游戏停止，输出game_over为1，表明游戏失败。
+* Score模块
+当 L_D=1且clear=0 时代表游戏进行， 此时计数器正常计数；L_D=0 时代表游戏结束，此时计数器停止计时；clear=1时，表明游戏开始，此时计数器清零。
 ![Game模块game_over](sim_img/Game_collision.png)  
 ## 组内成员及工作说明
 ## 验证过程  
