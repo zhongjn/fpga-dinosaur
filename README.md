@@ -56,6 +56,20 @@ B. 输入输出交互选择
 
         4.以时钟输入作为游戏时钟，根据parameters.v中的游戏参数控制游戏元素的状态。根据输入的start信号控制游戏的开始和重置，根据输入的jump信号控制小恐龙的跳跃。维护小恐龙的竖直速度以完成完整的跳跃过程。判断小恐龙和仙人掌的碰撞以输出game_over。对游戏始终计数来控制白天黑夜以及小恐龙运动状态的变化。
 * vga  
+        1.输入：
+        input     [11:0] d_in;     // bbbb_gggg_rrrr, pixel
+        input            vga_clk;  // 25MHz
+        input            clrn;
+        2.输出
+        output reg [8:0] row_addr; // pixel ram row address, 480 (512) lines
+        output reg [9:0] col_addr; // pixel ram col address, 640 (1024) pixels
+        output reg [3:0] r,g,b; // red, green, blue colors
+        output reg       rdn;      // read pixel RAM (active_low)
+        output reg       hs,vs;    // horizontal and vertical synchronization
+        3.图（截RTL那个好了）
+
+        4.这个模块来自课程网站上的vgademo。它读入12位的颜色数据，控制vga板上对应位置的rgb颜色。  
+
 * Renderer  
 
         1.输入：   
