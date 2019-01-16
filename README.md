@@ -83,7 +83,7 @@ B. 输入输出交互选择
 ![Game模块开始及跳跃](sim_img/Game_start.png)
 * Game模块跳跃结束  
 当小恐龙落回地面后，dino_y停止变化，结束跳跃状态，可以注意到小恐龙在水平移动时dino_state不断切换。
-![Game模块跳跃结束](sim_img/Game_jump_end.png)
+![Game模块跳跃结束](sim_img/Game_jumpend.png)
 * Game模块游戏失败  
 发生碰撞后游戏停止，输出game_over为1，表明游戏失败。
 ![Game模块game_over](sim_img/Game_collision.png)  
